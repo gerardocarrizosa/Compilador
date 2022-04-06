@@ -17,22 +17,17 @@ namespace Compilador
         List<Variables> expresionInfijo = new List<Variables>();
         List<Variables> pila = new List<Variables>();
         List<Variables> expresionPostfijo = new List<Variables>();
-
         List<Variables> expresionIzquierda = new List<Variables>();
         List<Variables> expresionDerecha = new List<Variables>();
         List<Variables> expresionIzquierdaEnPostfijo = new List<Variables>();
         List<Variables> expresionDerechaEnPostfijo = new List<Variables>();
-
         List<Variables> condicionalEnInfijo = new List<Variables>();
         List<Variables> condicionalEnPostfijo = new List<Variables>();
+        List<Variables> expresionCondicionalEnInfijo = new List<Variables>();
         string tipoDeCondicionalCompleta = null;
         public int tope = -1;
         int N = 50;
-
-        // Cale
-        List<Variables> expresionCondicionalEnInfijo = new List<Variables>();
-
-
+        
         public Semantico(List<Token> listaTokensSintactico, int linea) {
             listaTokensSemantico = listaTokensSintactico;
             lineaSemantico = linea;
