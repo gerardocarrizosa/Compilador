@@ -1,0 +1,10 @@
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.csproj.AssemblyReference.cache
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.Properties.Resources.resources
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.csproj.GenerateResource.cache
+C:\Users\gerga\source\repos\Compilador\Compilador\bin\Debug\Compilador.exe.config
+C:\Users\gerga\source\repos\Compilador\Compilador\bin\Debug\Compilador.exe
+C:\Users\gerga\source\repos\Compilador\Compilador\bin\Debug\Compilador.pdb
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.compilador_form.resources
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.csproj.CoreCompileInputs.cache
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.exe
+C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.pdb
