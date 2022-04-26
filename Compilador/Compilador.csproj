@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Error.cs" />
     <Compile Include="Lexico.cs" />
+    <Compile Include="LexicoGGC.cs" />
     <Compile Include="NodoVariables.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

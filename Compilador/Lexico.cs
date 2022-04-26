@@ -51,67 +51,48 @@ namespace Compilador
             {
                 case "vacio":
                     return -34;
-
                 case "cadena":
                     return -35;
-
                 case "ent":
                     return -36;
-
                 case "doble":
                     return -37;
-
                 case "bool":
                     return -38;
-
                 case "clase":
                     return -39;
-
                 case "si":
                     return -40;
-
                 case "importar":
                     return -41;
-
                 case "sino":
                     return -42;
-
                 case "para":
                     return -43;
-
                 case "mientras":
                     return -44;
-
                 case "haz":
                     return -45;
-
                 case "nulo":
                     return -46;
-
                 case "verdadero":
                     return -47;
-
                 case "falso":
                     return -48;
-
                 case "cambiar":
                     return -49;
-
                 case "caso":
                     return -50;
-
                 case "romper":
                     return -51;
-
                 case "var":
                     return -52;
-
                 case "imprimir":
                     return -53;
-
                 case "default":
                     return -54;
-
+                case "leer":
+                    return -55;
                 default:
                     return -1;
             }
@@ -485,7 +466,12 @@ namespace Compilador
                         lexema = lexema.Remove(lexema.Length - 1);
                     }
 
-                    Token nuevoToken = new Token()
+                    /*if (lexema.Length  == 2)
+                    {
+                        lexema = lexema.Remove(lexema.Length - 1);
+                    }*/
+
+                    Token nuevoToken = new Token() 
                     {
                         ValorToken = estado,
                         Lexema = lexema,
@@ -509,7 +495,7 @@ namespace Compilador
                         entrar = true;
                         nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);
                     }
-                    else if (estado <= -12 && estado >= -20)
+                    /*else if (estado <= -12 && estado >= -20)
                     {
                         //entrar = true;
                         //nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);

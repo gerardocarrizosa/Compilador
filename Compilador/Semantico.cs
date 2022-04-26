@@ -67,6 +67,7 @@ namespace Compilador
 
         public void AsignacionDeVariable(int puntero) {
             expresionPostfijo.Clear();
+            expresionInfijo.Clear();
             List<Variables> listaDeVariablesAuxiliar = variables.ToList();
             int llenadorDePila = puntero;
             string tipoDeOperacionIngresada;
@@ -77,11 +78,14 @@ namespace Compilador
                         if (llenadorDePila == listaTokensSemantico.Count - 1) {
                             NuevoError(-605, listaTokensSemantico[puntero - 1].Lexema);
                             break;
-                        } else if (listaTokensSemantico[llenadorDePila + 1].ValorToken == -28) {
+                        } else if (listaTokensSemantico[llenadorDePila + 1].ValorToken == -28) { //Aqui se agregó que leer lo dejara pasar.
                             break;
                         } else {
-                            expresionInfijo.Add(new Variables { Tipo = listaTokensSemantico[llenadorDePila + 1].TipoToken.ToString(), Lexema = listaTokensSemantico[llenadorDePila + 1].Lexema }/*listaTokensSemantico[llenadorDePila + 1]*/);
+                            expresionInfijo.Add(new Variables { Tipo = listaTokensSemantico[llenadorDePila + 1].TipoToken.ToString(), Lexema = listaTokensSemantico[llenadorDePila + 1].Lexema });
                         }
+                    }
+                    if (expresionInfijo[0].Lexema == "leer") {
+                        break;
                     }
                     if (expresionInfijo.Count == 1) {
                         if (listaDeVariablesAuxiliar[nodo].Tipo == listaTokensSemantico[puntero + 1].TipoToken.ToString() ||
@@ -378,6 +382,7 @@ namespace Compilador
             expresionIzquierda.Clear();
             expresionIzquierdaEnPostfijo.Clear();
             expresionCondicionalEnInfijo.Clear();
+            condicionalEnInfijo.Clear();
             int punteroDeCondicional = puntero;
             string tipoDeExpresionIzquierdaEnPostfijo = null, tipoDeExpresionDerechaEnPostfijo = null;
             int operador = 0;
