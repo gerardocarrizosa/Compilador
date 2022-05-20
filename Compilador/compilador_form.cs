@@ -32,6 +32,7 @@ namespace Compilador
             List<Error> listaErroresSintactico = objSintactico.listaErrorSintactico;
             List<Error> listaErrores = listaErroresLexico.Union(listaErroresSintactico).ToList(); //Lista de Errores Lexicos y Sintacticos
             List<Error> listaErroresSemantico = semantico.listaErrorSemantico; //Lista de Errores Totales
+            List<string> Polish = new List<string>();
 
             var lista = new BindingList<Token>(lexico.listaToken);
             var listaSemantico = new BindingList<Variables>(semantico.variables.ToList());
@@ -55,7 +56,14 @@ namespace Compilador
                 dgvSemantico.DataSource = listaSemantico;
 
                 var polish = new ListaPolish(semantico.listaTokensSemantico, lexico.linea);
-                polish.ejecutarPolish(polish.listaTokensPolish, 11);
+                Polish = polish.ejecutarPolish(polish.listaTokensPolish, 11);
+                string stringPolish = "";
+                for (int i = 0; i < Polish.Count; i++)
+                {
+                    stringPolish += Polish[i];
+                    stringPolish += " | ";
+                }
+                MessageBox.Show(stringPolish,"Polish");
             }
         }
 

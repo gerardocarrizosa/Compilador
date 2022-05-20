@@ -19,6 +19,7 @@ namespace Compilador
         public int lineaPolish;
         public int nivel;
         public List<string> pilaPendientes = new List<string>();
+        int sentenciaSiAnidada = 1;
 
         public ListaPolish(List<Token> listaTokens, int linea)
         {
@@ -26,7 +27,7 @@ namespace Compilador
             lineaPolish = linea;
         }
 
-        public void ejecutarPolish(List<Token> listaTokensPolish, int contador)
+        public List<string> ejecutarPolish(List<Token> listaTokensPolish, int contador)
         {
             bool dentroDelSi = false;
             bool existeSino = false;
@@ -46,9 +47,9 @@ namespace Compilador
                 if (listaTokensPolish[i].ValorToken == /*si*/-40)
                 {
                     pilaPendientes.Add("S2");
-                    pilaPendientes.Add("BRI-B");
+                    pilaPendientes.Add(string.Format("BRI-B{0}", sentenciaSiAnidada));
                     pilaPendientes.Add("S1");
-                    pilaPendientes.Add("BRF-A");
+                    pilaPendientes.Add(string.Format("BRF-A{0}", sentenciaSiAnidada));
                     pilaPendientes.Add("EXP");
                     List<Token> Exp = new List<Token>();
                     int incrementador = i;
@@ -67,6 +68,7 @@ namespace Compilador
                     listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1]);
                     pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                     dentroDelSi = true;
+                    sentenciaSiAnidada += 1;
                 }
                 if (listaTokensPolish[i].ValorToken == /*para*/-43)
                 {
@@ -132,6 +134,7 @@ namespace Compilador
                     }
                 }
             }
+            return listaPolish;
         }
 
         public void RellenarListaPolishInfijoAPostfijo(List<Token> listaTokensPolish, int puntero)
