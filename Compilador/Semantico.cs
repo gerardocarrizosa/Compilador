@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+ using System.Windows.Forms;
 
 namespace Compilador
 {
@@ -89,7 +89,8 @@ namespace Compilador
                     }
                     if (expresionInfijo.Count == 1) {
                         if (listaDeVariablesAuxiliar[nodo].Tipo == listaTokensSemantico[puntero + 1].TipoToken.ToString() ||
-                            listaTokensSemantico[puntero + 1].TipoToken.ToString() == "Identificador") {
+                            listaTokensSemantico[puntero + 1].TipoToken.ToString() == "Identificador" || listaTokensSemantico[puntero + 1].Lexema.ToString() == "falso" || 
+                            listaTokensSemantico[puntero + 1].Lexema.ToString() == "verdadero") {
                             break;
                         } else {
                             NuevoError(-702, listaTokensSemantico[puntero - 1].Lexema); //Incompatibilidad de tipos.

@@ -79,19 +79,19 @@ namespace Compilador
             // 
             this.ejecutarToolStripMenuItem.Name = "ejecutarToolStripMenuItem";
             this.ejecutarToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.ejecutarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ejecutarToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.ejecutarToolStripMenuItem.Text = "Ejecutar";
             this.ejecutarToolStripMenuItem.Click += new System.EventHandler(this.ejecutarToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(154, 6);
             // 
             // cerrarToolStripMenuItem
             // 
             this.cerrarToolStripMenuItem.Name = "cerrarToolStripMenuItem";
-            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.cerrarToolStripMenuItem.Text = "Cerrar";
             this.cerrarToolStripMenuItem.Click += new System.EventHandler(this.cerrarToolStripMenuItem_Click);
             // 
@@ -248,7 +248,7 @@ namespace Compilador
             this.txtCodigoFuente.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtCodigoFuente.Size = new System.Drawing.Size(636, 561);
             this.txtCodigoFuente.TabIndex = 10;
-            this.txtCodigoFuente.Text = "importar \'system\';\r\n\r\nclase MiClase {\r\n  \r\n}";
+            this.txtCodigoFuente.Text = resources.GetString("txtCodigoFuente.Text");
             // 
             // compilador_form
             // 
