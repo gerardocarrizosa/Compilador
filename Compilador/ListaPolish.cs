@@ -17,58 +17,92 @@ namespace Compilador
         public int tope = -1;
         int N = 50;
         public int lineaPolish;
-        public int nivel;
         public List<string> pilaPendientes = new List<string>();
-        int sentenciaSiAnidada = 1;
+        int incrementoParaBrincos = 1;
+        int iteracionesHaz = 1;
 
         public ListaPolish(List<Token> listaTokens, int linea)
         {
             listaTokensPolish = listaTokens;
             lineaPolish = linea;
         }
-
         public List<string> ejecutarPolish(List<Token> listaTokensPolish, int contador)
         {
-            bool dentroDelSi = false;
-            bool existeSino = false;
-            nivel = 0;
-            int i;
-            for (i = contador; i < listaTokensPolish.Count; i++)
+            bool apuntadorG = false;
+            for (int i = contador; i < listaTokensPolish.Count; i++)
             {
                 if (listaTokensPolish[i].ValorToken == /*imprimir*/-53)
                 {
-                    listaPolish.Add(listaTokensPolish[i + 2].Lexema);
-                    listaPolish.Add(listaTokensPolish[i].Lexema);
+                    if (apuntadorG)
+                    {
+                        listaPolish.Add("G");
+                        listaPolish.Add(listaTokensPolish[i + 2].Lexema);
+                        listaPolish.Add(listaTokensPolish[i].Lexema);
+                    }
+                    else if (pilaPendientes.Count > 0 && pilaPendientes[pilaPendientes.Count - 1].Contains("S2"))
+                    {
+                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                        listaPolish.Add(string.Format("A{0}", incrementoParaBrincos - 1));
+                        listaPolish.Add(listaTokensPolish[i + 2].Lexema);
+                        listaPolish.Add(listaTokensPolish[i].Lexema);
+                    }
+                    else
+                    {
+                        listaPolish.Add(listaTokensPolish[i + 2].Lexema);
+                        listaPolish.Add(listaTokensPolish[i].Lexema);
+                    }
                 }
                 if (listaTokensPolish[i].ValorToken == /*=*/-31)
                 {
-                    RellenarListaPolishInfijoAPostfijo(listaTokensPolish, i);
+                    if (apuntadorG)
+                    {
+                        listaPolish.Add("G");
+                        RellenarListaPolishInfijoAPostfijo(listaTokensPolish, i);
+                    }
+                    else if (pilaPendientes.Count > 0 && pilaPendientes[pilaPendientes.Count - 1].Contains("S2"))
+                    {
+                        listaPolish.Add(string.Format("A{0}", incrementoParaBrincos - 1));
+                        RellenarListaPolishInfijoAPostfijo(listaTokensPolish, i);
+                    }
+                    else
+                    {
+                        RellenarListaPolishInfijoAPostfijo(listaTokensPolish, i);
+                    }
                 }
                 if (listaTokensPolish[i].ValorToken == /*si*/-40)
                 {
-                    pilaPendientes.Add("S2");
-                    pilaPendientes.Add(string.Format("BRI-B{0}", sentenciaSiAnidada));
-                    pilaPendientes.Add("S1");
-                    pilaPendientes.Add(string.Format("BRF-A{0}", sentenciaSiAnidada));
+                    pilaPendientes.Add(string.Format("Si #{0} |FIN-B{0}", incrementoParaBrincos));
+                    pilaPendientes.Add(string.Format("Si #{0} |S2-A{0}", incrementoParaBrincos));
+                    pilaPendientes.Add(string.Format("Si #{0} |BRI-B{0}", incrementoParaBrincos));
+                    pilaPendientes.Add(string.Format("Si #{0} |S1", incrementoParaBrincos));
+                    pilaPendientes.Add(string.Format("Si #{0} |BRF-A{0}", incrementoParaBrincos));
                     pilaPendientes.Add("EXP");
-                    List<Token> Exp = new List<Token>();
+                    List<Token> EXP = new List<Token>();
                     int incrementador = i;
                     do
                     {
                         incrementador += 1;
-                        Exp.Add(listaTokensPolish[incrementador]);
+                        EXP.Add(listaTokensPolish[incrementador]);
                     } while (listaTokensPolish[incrementador + 1].Lexema != ":");
                     expresionPostfijo.Clear();
-                    expresionPostfijo = InfijoAPosfijo(Exp);
-                    for (int c = 0; c < Exp.Count; c++)
+                    expresionPostfijo = InfijoAPosfijo(EXP);
+                    for (int c = 0; c < EXP.Count; c++)
                     {
-                        listaPolish.Add(expresionPostfijo[c].Lexema);
+                        if (apuntadorG)
+                        {
+                            listaPolish.Add("G");
+                            listaPolish.Add(expresionPostfijo[c].Lexema);
+                            apuntadorG = false;
+                        }
+                        else
+                        {
+                            listaPolish.Add(expresionPostfijo[c].Lexema);
+                        }
                     }
                     pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                    listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1]);
+                    listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Split('|')[1]);
                     pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                    dentroDelSi = true;
-                    sentenciaSiAnidada += 1;
+                    incrementoParaBrincos += 1;
                 }
                 if (listaTokensPolish[i].ValorToken == /*para*/-43)
                 {
@@ -76,60 +110,67 @@ namespace Compilador
                 }
                 if (listaTokensPolish[i].ValorToken == /*haz*/-45)
                 {
-                    pilaPendientes.Add("FIN");
-                    pilaPendientes.Add("BRV-G");
-                    pilaPendientes.Add("EXP");
-                    pilaPendientes.Add("S1");
-                }
-                if (listaTokensPolish[i].Lexema == "{")
-                {
-                    nivel += 1;
+                    pilaPendientes.Add(string.Format("Haz #{0} |FIN", iteracionesHaz));
+                    pilaPendientes.Add(string.Format("Haz #{0} |BRV-G", iteracionesHaz));
+                    pilaPendientes.Add(string.Format("Haz #{0} |EXP", iteracionesHaz));
+                    pilaPendientes.Add(string.Format("Haz #{0} |S1", iteracionesHaz));
+                    apuntadorG = true;
+                    iteracionesHaz += 1;
                 }
                 if (listaTokensPolish[i].Lexema == "}")
                 {
-                    if ((dentroDelSi || existeSino) && pilaPendientes.Count > 0)
+                    if (pilaPendientes[pilaPendientes.Count - 1].Contains("FIN"))
                     {
-                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                        if (pilaPendientes[pilaPendientes.Count - 1] != "S1" && pilaPendientes[pilaPendientes.Count - 1] != "S2")
+                        if (listaTokensPolish[i + 1].Lexema == "mientras")
                         {
-                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1]);
+                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
+                            pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                            pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                            List<Token> EXP = new List<Token>();
+                            int incrementador = i + 2;
+                            do
+                            {
+                                incrementador += 1;
+                                EXP.Add(listaTokensPolish[incrementador]);
+                            } while (listaTokensPolish[incrementador + 1].Lexema != ")");
+                            expresionPostfijo.Clear();
+                            expresionPostfijo = InfijoAPosfijo(EXP);
+                            for (int c = 0; c < EXP.Count; c++)
+                            {
+                                listaPolish.Add(expresionPostfijo[c].Lexema);
+                            }
+                            pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Split('|')[1]);
+                            pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Split('|')[1]);
                             pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                         }
-                        
-                    } else
-                    {
-                        nivel -= 1;
+                        else
+                        {
+                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
+                            pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                        }
+                        if (pilaPendientes.Count == 0)
+                        {
+                            break;
+                        }
+                        continue;
                     }
-                }
-                if (listaTokensPolish[i].Lexema == "sino")
-                {
-                    existeSino = true;
-                }
-                if (listaTokensPolish[i].Lexema == "mientras")
-                {
-                    pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                    List<Token> EXP = new List<Token>();
-                    int incrementador = i + 1;
-                    do
+                    if (pilaPendientes[pilaPendientes.Count - 1].Contains("S1"))
                     {
-                        incrementador += 1;
-                        EXP.Add(listaTokensPolish[incrementador]);
-                    } while (listaTokensPolish[incrementador + 1].Lexema != ")");
-                    expresionPostfijo.Clear();
-                    expresionPostfijo = InfijoAPosfijo(EXP);
-                    for (int c = 0; c < EXP.Count; c++)
-                    {
-                        listaPolish.Add(expresionPostfijo[c].Lexema);
+                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                        listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Split('|')[1]);
+                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                        if (pilaPendientes[pilaPendientes.Count - 1].Contains("S2"))
+                        {
+                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
+                            pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
+                        }
+                        continue;
                     }
-                    if (pilaPendientes[pilaPendientes.Count - 1] != "EXP")
+                    if (pilaPendientes[pilaPendientes.Count - 1].Contains("S1") || pilaPendientes[pilaPendientes.Count - 1].Contains("FIN") 
+                        && listaTokensPolish[i + 1].Lexema == "mientras")
                     {
-                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                    } else
-                    {
-                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                        listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1]);
-                        pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
-                        listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1]);
                         pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                     }
                 }

@@ -64,6 +64,8 @@ namespace Compilador
                     stringPolish += " | ";
                 }
                 MessageBox.Show(stringPolish,"Polish");
+        /*-----------------------------------------------------------------------------------------------------------*/
+                
             }
         }
 
