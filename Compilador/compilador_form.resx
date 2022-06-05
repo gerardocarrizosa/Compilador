@@ -125,12 +125,12 @@
 
 clase MiClase {
   vacio NumMayor() {
-    imprimir('Número Mayor');
+    cadena titulo = 'Numero Mayor';
+    imprimir(titulo);
     ent a = 5;
     ent b = 15;
     ent c = 2;
     ent exit = 0;
-    cadena str = 'Hola Mundo';
     haz {
       si a &gt; b : {
         si a &gt; c : {
@@ -147,7 +147,7 @@ clase MiClase {
           imprimir('c es mayor');
           exit = 1;
         }
-    } mientras exit == 0 :
+    } mientras exit == 1 :
   }
 }</value>
   </data>

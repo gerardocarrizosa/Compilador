@@ -76,7 +76,6 @@ namespace Compilador
                 string stringEnsamblador = "\nINCLUDE MACROS.MAC\n" +
                                            "DOSSEG\n" +
                                            ".MODEL SMALL\n" +
-                                           //".586\n" +
                                            ".STACK 100h\n" +
                                            ".DATA";
 
@@ -97,7 +96,7 @@ namespace Compilador
                     }
                     else
                     {
-                        stringEnsamblador += "\n\t\t\t" + variables[i].Lexema + " db ?";
+                        stringEnsamblador += "\n\t\t\t" + variables[i].Lexema + " dw ?";
                     }
                 }
                 stringEnsamblador += "\n\t\t\t;/variables";
@@ -118,10 +117,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tSUMAR " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tSUMAR " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db " + "?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw " + "?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "-")
@@ -129,10 +128,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tRESTA " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tRESTA " + operando1 + " " + operando2 + " " + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "*")
@@ -140,10 +139,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tMULTI " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tMULTI " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "/")
@@ -151,15 +150,15 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tDIVIDE " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tDIVIDE " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i].StartsWith("'") && CodigoEnPolish[i].EndsWith("'"))
                     {
-                        pilaVariables.Push(CodigoEnPolish[i].Substring(1, CodigoEnPolish[i].Length-2)); // es string
+                        pilaVariables.Push(CodigoEnPolish[i].Substring(1, CodigoEnPolish[i].Length - 2)); // es string
                     }
                     else if (CodigoEnPolish[i] == "= ")
                     {
@@ -174,7 +173,7 @@ namespace Compilador
                             var operando2 = pilaVariables.Pop();
                             var operando1 = pilaVariables.Pop();
 
-                            stringEnsamblador += "\t\t\tI_ASIGNAR " + operando1 + ", " + operando2 + "\n";
+                            stringEnsamblador += "\t\t\tI_ASIGNAR " + operando1 + "," + operando2 + "\n";
                         }
 
                     }
@@ -183,10 +182,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tI_MAYOR " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tI_MAYOR " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == ">=")
@@ -194,10 +193,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tI_MAYORIGUAL " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tI_MAYORIGUAL " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "<")
@@ -205,10 +204,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tI_MENOR " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tI_MENOR " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "<=")
@@ -216,10 +215,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tI_MENORIGUAL " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tI_MENORIGUAL " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "==")
@@ -227,10 +226,10 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tI_IGUAL " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tI_IGUAL " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "!=")
@@ -238,23 +237,34 @@ namespace Compilador
                         var operando2 = pilaVariables.Pop();
                         var operando1 = pilaVariables.Pop();
 
-                        stringEnsamblador += "\t\t\tI_DIFERENTES " + operando1 + ", " + operando2 + ", " + "resultado" + contadorOperaciones + "\n";
+                        stringEnsamblador += "\t\t\tI_DIFERENTES " + operando1 + "," + operando2 + "," + "resultado" + contadorOperaciones + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i] == "imprimir")
                     {
                         string operando1 = pilaVariables.Pop();
-                        stringEnsamblador += "\t\t\tWRITE " + operando1 + "\n";
+                        if (stringEnsamblador.Contains(operando1))
+                        {
+                            stringEnsamblador += "\t\t\tWRITE " + operando1 + "\n";
+                        }
+                        else
+                        {
+                            string resultado = "resultado" + contadorOperaciones;
+                            pilaVariables.Push(resultado);
+                            stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db '" + operando1 + "','$'\n\t\t\t;/variables");
+                            stringEnsamblador += "\t\t\tWRITE " + resultado + "\n";
+                            contadorOperaciones++;
+                        }
                     }
                     else if (CodigoEnPolish[i] == "leer")
                     {
                         stringEnsamblador += "\t\t\treadinteger@ " + "VALOR1@" + "\n";
                         string resultado = "resultado" + contadorOperaciones;
                         pilaVariables.Push(resultado);
-                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " db ?" + "\n\t\t\t;/variables");
+                        stringEnsamblador = stringEnsamblador.Replace(";/variables", resultado + " dw ?" + "\n\t\t\t;/variables");
                         contadorOperaciones++;
                     }
                     else if (CodigoEnPolish[i].Contains("BRF"))
@@ -315,8 +325,8 @@ namespace Compilador
                     {
                         Byte[] text = new UTF8Encoding(true).GetBytes(stringEnsamblador);
                         fs.Write(text, 0, text.Length);
+                        MessageBox.Show("Archivo .asm generado!", "Aviso");
                     }
-                   
                 }
                 catch (Exception ex)
                 {
