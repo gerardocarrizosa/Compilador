@@ -11,13 +11,13 @@ namespace Compilador
     {
         public List<Token> listaTokensPolish;
         public List<string> listaPolish = new List<string>();
+        public List<string> pilaPendientes = new List<string>();
         List<Token> expresionInfijo = new List<Token>();
         List<Token> expresionPostfijo = new List<Token>();
         List<Token> pila = new List<Token>();
         public int tope = -1;
         int N = 50;
         public int lineaPolish;
-        public List<string> pilaPendientes = new List<string>();
         int incrementoParaBrincos = 1;
         int iteracionesHaz = 1;
 
@@ -35,7 +35,7 @@ namespace Compilador
                 {
                     if (apuntadorG)
                     {
-                        listaPolish.Add("G");
+                        listaPolish.Add("@G");
                         listaPolish.Add(listaTokensPolish[i + 2].Lexema);
                         listaPolish.Add(listaTokensPolish[i].Lexema);
                     }
@@ -56,7 +56,7 @@ namespace Compilador
                 {
                     if (apuntadorG)
                     {
-                        listaPolish.Add("G");
+                        listaPolish.Add("@G");
                         RellenarListaPolishInfijoAPostfijo(listaTokensPolish, i);
                     }
                     else if (pilaPendientes.Count > 0 && pilaPendientes[pilaPendientes.Count - 1].Contains("S2"))
@@ -90,7 +90,7 @@ namespace Compilador
                     {
                         if (apuntadorG)
                         {
-                            listaPolish.Add("G");
+                            listaPolish.Add("@G");
                             listaPolish.Add(expresionPostfijo[c].Lexema);
                             apuntadorG = false;
                         }
@@ -104,10 +104,6 @@ namespace Compilador
                     pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                     incrementoParaBrincos += 1;
                 }
-                if (listaTokensPolish[i].ValorToken == /*para*/-43)
-                {
-
-                }
                 if (listaTokensPolish[i].ValorToken == /*haz*/-45)
                 {
                     pilaPendientes.Add(string.Format("Haz #{0} |FIN", iteracionesHaz));
@@ -119,20 +115,24 @@ namespace Compilador
                 }
                 if (listaTokensPolish[i].Lexema == "}")
                 {
+                    if (pilaPendientes.Count == 0)
+                    {
+                        continue;
+                    }
                     if (pilaPendientes[pilaPendientes.Count - 1].Contains("FIN"))
                     {
                         if (listaTokensPolish[i + 1].Lexema == "mientras")
                         {
-                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
+                            listaPolish.Add("@" + pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
                             pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                             pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                             List<Token> EXP = new List<Token>();
-                            int incrementador = i + 2;
+                            int incrementador = i + 1;
                             do
                             {
                                 incrementador += 1;
                                 EXP.Add(listaTokensPolish[incrementador]);
-                            } while (listaTokensPolish[incrementador + 1].Lexema != ")");
+                            } while (listaTokensPolish[incrementador + 1].Lexema != ":");
                             expresionPostfijo.Clear();
                             expresionPostfijo = InfijoAPosfijo(EXP);
                             for (int c = 0; c < EXP.Count; c++)
@@ -147,7 +147,7 @@ namespace Compilador
                         }
                         else
                         {
-                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
+                            listaPolish.Add("@" + pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
                             pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                         }
                         if (pilaPendientes.Count == 0)
@@ -163,7 +163,7 @@ namespace Compilador
                         pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                         if (pilaPendientes[pilaPendientes.Count - 1].Contains("S2"))
                         {
-                            listaPolish.Add(pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
+                            listaPolish.Add("@" + pilaPendientes[pilaPendientes.Count - 1].Substring(pilaPendientes[pilaPendientes.Count - 1].Length - 2));
                             pilaPendientes.RemoveAt(pilaPendientes.Count - 1);
                         }
                         continue;
@@ -194,7 +194,11 @@ namespace Compilador
             {
                 incrementadorPuntero += 1;
                 expresionInfijo.Add(listaTokensPolish[incrementadorPuntero]);
-                if (expresionInfijo[expresionInfijo.Count - 1].TipoToken.ToString() == "PalabraReservada")
+                /*if (expresionInfijo[expresionInfijo.Count - 1].TipoToken.ToString() == "PalabraReservada"
+                    || expresionInfijo[expresionInfijo.Count - 1].TipoToken.ToString() == "Cadena")
+                //|| expresionInfijo[expresionInfijo.Count - 1].TipoToken.ToString() == "NumeroEntero"
+                //|| expresionInfijo[expresionInfijo.Count - 1].TipoToken.ToString() == "NumeroDecimal" 
+                //&& listaTokensPolish[incrementadorPuntero + 1].TipoToken.ToString() != "OperadorAritmetico")
                 {
                     expresionPostfijo = InfijoAPosfijo(expresionInfijo);
                     for (int i = 0; i < expresionPostfijo.Count; i++)
@@ -202,13 +206,48 @@ namespace Compilador
                         listaPolish.Add(expresionPostfijo[i].Lexema);
                     }
                     break;
-                }
+                }*/
             } while (listaTokensPolish[incrementadorPuntero + 1].ValorToken != -28);
+            List<Token> izquierda = new List<Token>();
+            List<Token> derecha = new List<Token>();
+            int x = 0;
+            do
+            {
+                izquierda.Add(expresionInfijo[x]);
+                x++;
+            } while (expresionInfijo[x].ValorToken != -31);
+            x++;
+            do
+            {
+                derecha.Add(expresionInfijo[x]);
+                x++;
+            } while (x <= expresionInfijo.Count - 1);
+            if (derecha.Count == 1)
+            {
+                expresionPostfijo = InfijoAPosfijo(expresionInfijo);
+                for (int i = 0; i < expresionPostfijo.Count; i++)
+                {
+                    listaPolish.Add(expresionPostfijo[i].Lexema);
+                }
+            }
+            else
+            {
+                List<Token> derechaPostfijo = new List<Token>();
+                List<Token> izquierdaPostfijo = new List<Token>();
+                expresionPostfijo.Add(expresionInfijo[0]);
+                derechaPostfijo = InfijoAPosfijo(derecha);
+                expresionPostfijo.Add(expresionInfijo[1]);
+                for (int i = 0; i < expresionPostfijo.Count; i++)
+                {
+                    listaPolish.Add(expresionPostfijo[i].Lexema);
+                }
+            }
+            
         }
 
         public List<Token> InfijoAPosfijo(List<Token> listaOperacionInfijo)
         {
-            expresionPostfijo.Clear();
+            //expresionPostfijo.Clear();
             for (int i = 0; i < listaOperacionInfijo.Count; i++)
             {
                 if (listaOperacionInfijo[i].TipoToken.ToString() == "Identificador"
@@ -275,6 +314,10 @@ namespace Compilador
         }
 
         #region Funciones Infijo a Postfijo
+        /*if (listaTokensPolish[i].ValorToken == -43)
+                {
+
+                }*/
         public void MeterALaPila(Token dato)
         {
             if (PilaLlena() != true)

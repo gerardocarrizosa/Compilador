@@ -125,30 +125,29 @@
 
 clase MiClase {
   vacio NumMayor() {
-    imprimir('Primer numero: ');
-    ent a = leer();
-    imprimir('Segundo numero: ');
-    ent b = leer();
-    imprimir('Tercer numero: ');
-    ent c = leer();
-    bool salir = falso;
+    imprimir('Número Mayor');
+    ent a = 5;
+    ent b = 15;
+    ent c = 2;
+    ent exit = 0;
+    cadena str = 'Hola Mundo';
     haz {
       si a &gt; b : {
         si a &gt; c : {
           imprimir('a es mayor');
-          salir = verdadero;
+          exit = 1;
         } sino {
           imprimir('c es mayor');
-          salir = verdadero;
+          exit = 1;
         }
       } sino si b &gt; c : {
           imprimir('b es mayor');
-          salir = verdadero;
+          exit = 1;
         } sino {
           imprimir('c es mayor');
-          salir = verdadero;
+          exit = 1;
         }
-    } mientras (salir == falso);
+    } mientras exit == 0 :
   }
 }</value>
   </data>
