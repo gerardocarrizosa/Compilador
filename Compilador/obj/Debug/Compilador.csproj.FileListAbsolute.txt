@@ -8,3 +8,4 @@ C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.compilado
 C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.csproj.CoreCompileInputs.cache
 C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.exe
 C:\Users\gerga\source\repos\Compilador\Compilador\obj\Debug\Compilador.pdb
+C:\Users\gerga\Source\Repos\Compilador\Compilador\obj\Debug\Compilador.csproj.SuggestedBindingRedirects.cache

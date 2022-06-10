@@ -202,7 +202,6 @@ namespace Compilador
                 {
                     punteroLexico = listaTokens.Count - 1;
                 }
-
                 if (listaSintactico[punteroSintactico] < 0)
                 {
                     if (listaSintactico[punteroSintactico] == -56)
@@ -215,11 +214,6 @@ namespace Compilador
                         if (listaSintactico[punteroSintactico] == -99)
                         {
                             revision = true;
-                            /*if (error)
-                                MessageBox.Show("Error en análisis sintáctico");
-                            else
-                                //MessageBox.Show("Código compilado correctamente");
-                            break;*/
                         }
                         else
                         {

@@ -466,12 +466,7 @@ namespace Compilador
                         lexema = lexema.Remove(lexema.Length - 1);
                     }
 
-                    /*if (lexema.Length  == 2)
-                    {
-                        lexema = lexema.Remove(lexema.Length - 1);
-                    }*/
-
-                    Token nuevoToken = new Token() 
+                    Token nuevoToken = new Token()
                     {
                         ValorToken = estado,
                         Lexema = lexema,
@@ -485,7 +480,7 @@ namespace Compilador
                         nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);
                         entrar = true;
                     }
-                    else if (estado == -2 || estado == -6 || estado == -7 || estado == -8 || estado == -9 || estado == -10 || estado == -11 /*|| estado == -12 || estado == -13 || estado == -14 || estado == -15*/)
+                    else if (estado == -2 || estado == -6 || estado == -7 || estado == -8 || estado == -9 || estado == -10 || estado == -11 )
                     {
                         entrar = true;
                         nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);
@@ -495,16 +490,6 @@ namespace Compilador
                         entrar = true;
                         nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);
                     }
-                    /*else if (estado <= -12 && estado >= -20)
-                    {
-                        //entrar = true;
-                        //nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);
-                    }
-                    /*else if (estado <= -16 && estado >= -21)
-                    {
-                        entrar = true;
-                        nuevoToken.Lexema = lexema.Remove(lexema.Length - 1);
-                    }*/
 
                     nuevoToken.TipoToken = Tipo(nuevoToken.ValorToken);
                     listaToken.Add(nuevoToken);

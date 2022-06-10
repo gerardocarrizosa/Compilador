@@ -42,16 +42,19 @@ namespace Compilador
             dgvLexico.DataSource = null;
             dgvLexico.DataSource = lista;
 
-            if (listaErrores.Count != 0) {
+            if (listaErrores.Count != 0)
+            {
                 dgvErrores.DataSource = null;
                 dgvErrores.DataSource = listaErrores;
                 dgvSemantico.DataSource = null;
             }
-            if (listaErroresSemantico.Count != 0) {
+            if (listaErroresSemantico.Count != 0)
+            {
                 dgvErrores.DataSource = null;
                 dgvErrores.DataSource = listaErroresSemantico;
             }
-            if (listaErrores.Count == 0 && listaErroresSemantico.Count == 0) {
+            if (listaErrores.Count == 0 && listaErroresSemantico.Count == 0)
+            {
                 MessageBox.Show("Código compilado correctamente");
                 dgvErrores.DataSource = null;
                 dgvSemantico.DataSource = null;
@@ -65,13 +68,13 @@ namespace Compilador
                     stringPolish += CodigoEnPolish[i];
                     stringPolish += " | ";
                 }
-                MessageBox.Show(stringPolish,"Polish");
+                MessageBox.Show(stringPolish, "Polish");
 
                 /*------Crear Archivo ASM------------------------------------------------------------------------------------*/
 
                 Stack<string> pilaVariables = new Stack<string>();
 
-                string path = "C:/Users/gerga/ITH//ASM/compi.asm";
+                string path = "C:/Users/gerga/ITH/ASM/compi.asm";
 
                 string stringEnsamblador = "\nINCLUDE MACROS.MAC\n" +
                                            "DOSSEG\n" +
@@ -333,18 +336,18 @@ namespace Compilador
 
                     throw ex;
                 }
-                
+
             }
         }
-
+        private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
         private void compilador_form_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
+
     }
 }

@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Compilador"
   ],
-  "SelectedNode": "\\Compilador.sln",
+  "SelectedNode": "\\Compilador\\Compilador.csproj",
   "PreviewInSolutionExplorer": false
 }
